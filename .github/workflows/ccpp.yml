@@ -1,13 +1,15 @@
-name: C/C++ CI
+name: make project CI
 
-on: [push]
+on: [push, pull_request]
 
-jobs:
+jobs:   
   build:
-
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v2
-    - name: make
-      run: make
+    - name: install soapy-sdr dependency
+      run: sudo apt-get install soapysdr-tools
+    - name: install liquid-dsp dependency
+      run: sudo apt-get install       
+    - name: make dsp-projects
+      run: make 
