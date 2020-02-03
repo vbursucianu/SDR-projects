@@ -1,3 +1,5 @@
+![make project CI](https://github.com/vbursucianu/SDR-projects/workflows/make%20project%20CI/badge.svg)
+
 # SDR-projects
 A collections of experimental SDR projects that i've worked on. 
 
