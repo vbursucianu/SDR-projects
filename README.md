@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/vbursucianu/SDR-projects/workflows/ccpp/badge.svg)](https://github.com/vbursucianu/SDR-projects/workflows/ccpp/badge.svg)
+
 # SDR-projects
 A collections of experimental SDR projects that i've worked on. 
 
