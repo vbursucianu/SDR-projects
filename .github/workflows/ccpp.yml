@@ -7,9 +7,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      
     - name: install soapy-sdr dependency
       run: sudo apt-get install soapysdr-tools
-    - name: install liquid-dsp dependency
-      run: sudo apt-get install       
+      
+    - name: clone liquid-dsp dependency
+      run: git clone git://github.com/jgaeddert/liquid-dsp.git
+    - name: cd into liquid-dsp
+      run: cd liquid-dsp   
+    - name: checkout version 1.3.2
+      run: git checkout v1.3.2   
+    - name: reconfigure
+      run: ./reconf
+    - name: configure
+      run: ./configure     
+    - name: make liquid-dsp
+      run: make
+    - name: install liquid-dsp
+      run: sudo make install     
+    - name: step out of liquid-dsp
+      run: cd ..
+                                        
     - name: make dsp-projects
       run: make 
