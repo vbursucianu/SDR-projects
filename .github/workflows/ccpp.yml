@@ -15,9 +15,9 @@ jobs:
     - name: cmake soapy-sdr
       run: cd SoapySDR && mkdir build && cd build && cmake ..
     - name: make soapy-sdr
-      run: cd SoapySDR && make
+      run: cd SoapySDR/build && make
     - name: install soapy-sdr
-      run: cd SoapySDR && sudo make install
+      run: cd SoapySDR/build && sudo make install
 
     - name: install liquid-dsp dependency
       run: sudo apt-get install automake autoconf
