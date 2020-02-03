@@ -33,6 +33,9 @@ jobs:
       run: cd liquid-dsp && make
     - name: install liquid-dsp
       run: cd liquid-dsp && sudo make install     
-                                        
+
+    - name: install other dependencies
+      run: sudo apt-get install libboost-all-dev
+ 
     - name: make dsp-projects
       run: make 
