@@ -10,8 +10,8 @@ jobs:
       
     - name: clone soapy-sdr
       run: git clone https://github.com/pothosware/SoapySDR.git
-    - name: checkout version 0.7.1 of soapy-sdr
-      run: cd SoapySDR && git checkout -b soapy-sdr-0.7.1    
+    - name: checkout version 0.7.2 of soapy-sdr
+      run: cd SoapySDR && git checkout -b soapy-sdr-0.7.2    
     - name: cmake soapy-sdr
       run: cd SoapySDR && mkdir build && cd build && cmake ..
     - name: make soapy-sdr
