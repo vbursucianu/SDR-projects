@@ -1,4 +1,4 @@
-name: make project CI
+name: build
 
 on: [push, pull_request]
 
