@@ -1,4 +1,5 @@
-![make project CI](https://github.com/vbursucianu/SDR-projects/workflows/make%20project%20CI/badge.svg)
+![build](https://github.com/vbursucianu/SDR-projects/workflows/make%20project%20CI/badge.svg)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://choosealicense.com/licenses/mit/)
 
 # SDR-projects
 A collections of experimental SDR projects that i've worked on. 
