@@ -17,6 +17,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+  int written = -1;  //Write Status to SDR
+
   SoapySDR::KwargsList results = SoapySDR::Device::enumerate();
   SoapySDR::Kwargs args = results[0];
   SoapySDR::Device* sdr = SoapySDR::Device::make(args);
@@ -47,6 +49,35 @@ int main(int argc, char* argv[])
   auto gain = sdr->getGainRange(SOAPY_SDR_TX, 0);
   cout << "Gain range:" << endl;
   cout << "  " << gain.minimum() << " dB to " << gain.maximum() << " dB, step " << gain.step() << " dB" << endl;
+
+  sdr->setAntenna(SOAPY_SDR_TX, 0, "BAND1");
+	sdr->setGain(SOAPY_SDR_TX, 0, 60.0);
+	sdr->setSampleRate(SOAPY_SDR_TX, 0, 1e6);
+	sdr->setBandwidth(SOAPY_SDR_TX, 0, 5e6);
+	sdr->setFrequency(SOAPY_SDR_TX, 0, "RF", 32e6);
+	sdr->setFrequency(SOAPY_SDR_TX, 0, "BB", -(32e6 - 27.145e6));
+
+	SoapySDR::Stream* txStream = sdr->setupStream(SOAPY_SDR_TX, SOAPY_SDR_CF32);
+
+	if (txStream == nullptr) {
+		cerr << "Failed to setup stream" << endl;
+		SoapySDR::Device::unmake(sdr);
+		return EXIT_FAILURE;
+	}
+
+	sdr->activateStream(txStream, 0, 0, 0);
+	sdr->setGain(SOAPY_SDR_TX, 0, 60.0);
+
+  // Do some DSP here //
+
+  // Transmit Buffer
+	//written = sdr->writeStream(txStream, buffs, 4000, flags);
+	//if (written <= 0) {
+	//	cerr << SoapySDR::errToStr(written) << endl;
+	//}
+
+	sdr->deactivateStream(txStream);
+	sdr->closeStream(txStream);
 
   SoapySDR::Device::unmake(sdr);
 
