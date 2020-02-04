@@ -31,6 +31,8 @@ jobs:
       run: cd liquid-dsp && ./configure     
     - name: make liquid-dsp
       run: cd liquid-dsp && make
+    - name: make check liquid-dsp
+      run: cd liquid-dsp && make check      
     - name: install liquid-dsp
       run: cd liquid-dsp && sudo make install     
 
