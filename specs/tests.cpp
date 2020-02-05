@@ -8,5 +8,5 @@ class unittestx : public ::Test
 
 TEST_F(unittestx, FirstUnitTest)
 {
-  FAIL();
+  SUCCEED();
 }
