@@ -9,6 +9,16 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
+    - name: Installing lcov
+      run:  sudo apt install lcov
+    - name: Cloning gtest
+      run:  git clone https://github.com/google/googletest.git && cd googletest && mkdir build
+    - name: Cmake gtest
+      run: cd googletest/build && cmake ..
+    - name: make gtest
+      run: cd googletest/build && make
+    - name: Install gtest
+      run: cd googletest/build && sudo make install
     - name: Unit Testing
       run: make test
     - name: Coveralls GitHub Action
