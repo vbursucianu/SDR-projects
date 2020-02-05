@@ -1,5 +1,5 @@
 ![build](https://github.com/vbursucianu/SDR-projects/workflows/build/badge.svg)
-[![Dependency Status](https://david-dm.org/boennemann/badges.svg)](https://david-dm.org/boennemann/badges)
+[![CodeFactor](https://www.codefactor.io/repository/github/vbursucianu/sdr-projects/badge/master)](https://www.codefactor.io/repository/github/vbursucianu/sdr-projects/overview/master)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://choosealicense.com/licenses/mit/)
 
 # SDR-projects
