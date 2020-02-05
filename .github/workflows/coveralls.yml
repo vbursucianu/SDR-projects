@@ -1,6 +1,6 @@
 name: Coveralls
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -9,6 +9,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
+    - name: Unit Testing
+      run: make test
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v1.0.1
       with:
