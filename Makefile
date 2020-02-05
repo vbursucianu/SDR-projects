@@ -90,7 +90,7 @@ help: $(info Sorry no help)
 build_specs:
 	$(CXX) $(CPPFLAGS) -o $(SPECS_OBJ) -c $(SPECS_SRC) $(SPECSFLAGS)
 	$(CXX) $(CPPFLAGS) -o $(TESTS_OBJ) -c $(TESTS_SRC) $(SPECSFLAGS)
-	$(CXX) -o $(SPECS_DIR)/$(SPECS_BIN) $(SPECS_OBJ) $(GTEST_LIB) $(LDUFLAGS) $(SPECSFLAGS)
+	$(CXX) -o $(SPECS_DIR)/$(SPECS_BIN) $(SPECS_OBJ) $(TESTS_OBJ) $(GTEST_LIB) $(LDUFLAGS) $(SPECSFLAGS)
 	specs/$(SPECS_BIN)
 	gcov $(SPECS_SRC)
 	mkdir -p specs/coverage
