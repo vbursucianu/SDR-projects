@@ -17,9 +17,6 @@ obj/
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai
@@ -30,10 +27,18 @@ obj/
 #Visual Code
 *.vscode
 
+#Coveralls
+*.gcov
+*.gcna
+*.info
+*.gcda
+*.gcno
+
 # Executables
 *.exe
 *.out
 *.app
+*.bin
 bin/
 
 
