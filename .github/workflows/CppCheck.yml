@@ -1,0 +1,13 @@
+name: CppCheck
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install CppCheck
+      run: sudo apt-get install cppcheck
+    - name: Run CppCheck
+      run: cppcheck src/ --enable=all

@@ -1,5 +1,6 @@
 ![build](https://github.com/vbursucianu/SDR-projects/workflows/build/badge.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/vbursucianu/sdr-projects/badge/master)](https://www.codefactor.io/repository/github/vbursucianu/sdr-projects/overview/master)
+[![Coverage Status](https://coveralls.io/repos/github/vbursucianu/SDR-projects/badge.svg?branch=master)](https://coveralls.io/github/vbursucianu/SDR-projects?branch=master)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://choosealicense.com/licenses/mit/)
 
 # SDR-projects
