@@ -39,6 +39,9 @@
 
 #include <getopt.h>
 
+#include "SignalProcessingService.h"
+#include "LiquidAdapter.h"
+
 #define CENTER_FREQUENCY  915e6
 #define BANDWIDTH         5e6
 #define SAMPLE_RATE       1e6
@@ -59,6 +62,11 @@ void usage()
 
 int main(int argc, char* argv[])
 {
+  // create liquid dsp adapter
+  LiquidAdapter liquidAdapter;
+  SignalProcessingService service(&liquidAdapter);
+  service.Initialize(102);
+
   // create mod/demod objects
   modulation_scheme ms = LIQUID_MODEM_QAM16;
 

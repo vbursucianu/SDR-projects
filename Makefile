@@ -44,16 +44,22 @@ test: build_dirs build_specs
 OBJ_DIR := obj
 BUILD_DIR := bin
 SRC_DIR := src
-# Subdirectory name
+INCLUDE_DIR := include
+# Source Subdirectory name
 TEST_DIR := $(SRC_DIR)/test
 TX_DIR := $(SRC_DIR)/tx
 RX_DIR := $(SRC_DIR)/rx
 SISO_DIR := $(SRC_DIR)/siso
 MIMO_DIR := $(SRC_DIR)/mimo
+COMMON_DIR := $(SRC_DIR)/common
+# Header Subdirectory name
+
 # Test Directories name
 SPECS_DIR := specs
+MOCKS_DIR := $(SPECS_DIR)/mocks
 COVERAGE_DIR := $(SPECS_DIR)/coverage
 SPECSDIR := $(SPECS_DIR)/coverage $(SPECS_DIR)/obj $(SPECS_DIR)/bin
+
 #=====================================#
 # Project Source files
 OPEN_SRC = $(TEST_DIR)/open.cpp
@@ -61,9 +67,15 @@ RX_SRC = $(RX_DIR)/rx.cpp
 TX_SRC = $(TX_DIR)/tx.cpp
 SISO_SRC = $(SISO_DIR)/siso.cpp
 MIMO_SRC = $(MIMO_DIR)/mimo.cpp
+LIQUID_SRC = $(COMMON_DIR)/LiquidAdapter.cpp
+ILIQUID_SRC = $(COMMON_DIR)/ILiquidAdapter.cpp
+SIGNAL_PROCESSING_SERVICE_SRC = $(COMMON_DIR)/SignalProcessingService.cpp
 # Unit Testing Source files
-SPECS_SRC = $(SPECS_DIR)/main.cpp
-TESTS_SRC = $(SPECS_DIR)/tests.cpp
+MAIN_SPECS_SRC = $(SPECS_DIR)/main.specs.cpp
+SIGNAL_PROCESSING_SERVICE_SPECS_SRC = $(SPECS_DIR)/SignalProcessingService.specs.cpp
+# Unit Testing Header files
+ILIQUID_MOCK_INC = $(SPECS_DIR)/mocks/ILiquidAdapter.mock.h
+
 #=====================================#
 # Project Objects 
 OPEN_OBJ = $(OBJ_DIR)/test/open.o
@@ -71,15 +83,18 @@ RX_OBJ = $(OBJ_DIR)/rx/rx.o
 TX_OBJ = $(OBJ_DIR)/tx/tx.o
 SISO_OBJ = $(OBJ_DIR)/siso/siso.o
 MIMO_OBJ = $(OBJ_DIR)/mimo/mimo.o
+LIQUID_ADAPTER_OBJ = $(OBJ_DIR)/common/LiquidAdapter.o
+SIGNAL_PROCESSING_SERVICE_OBJ = $(OBJ_DIR)/common/SignalProcessingService.o
 # All Project Objects Output
-PROJECT_OBJ := $(OPEN_OBJ) $(RX_OBJ) $(TX_OBJ) $(SISO_OBJ) $(MIMO_OBJ)
+PROJECT_OBJ := $(OPEN_OBJ) $(RX_OBJ) $(TX_OBJ) $(SISO_OBJ) $(MIMO_OBJ) $(LIQUID_ADAPTER_OBJ)
 OBJDIRS := $(sort $(dir $(PROJECT_OBJ)))
 # Unit Testing Objects 
-SPECS_OBJ = $(SPECS_DIR)/$(OBJ_DIR)/main.o
-TESTS_OBJ = $(SPECS_DIR)/$(OBJ_DIR)/tests.o
+MAIN_SPECS_OBJ = $(SPECS_DIR)/$(OBJ_DIR)/main.specs.o
+SIGNAL_PROCESSING_SERVICE_SPECS_OBJ = $(SPECS_DIR)/$(OBJ_DIR)/SignalProcessingService.specs.o
 # All Unit Tests Objects Output
-TEST_OBJ := $(SPECS_OBJ) $(TESTS_OBJ)
-TESTOBJDIRS := $(sort $(dir $(TEST_OBJ)))
+SPECS_OBJ := $(MAIN_SPECS_OBJ) $(TX_SPECS_OBJ)
+SPECSOBJDIRS := $(sort $(dir $(SPECS_OBJ)))
+
 #=====================================#
 # Project binaries name
 OPEN_BIN := $(BUILD_DIR)/open.bin
@@ -91,6 +106,7 @@ MIMO_BIN := $(BUILD_DIR)/mimo.bin
 PROJECT_BIN := $(OPEN_BIN) $(RX_BIN) $(TX_BIN) $(SISO_BIN) $(MIMO_BIN)
 # Unit Test binary name
 SPECS_BIN := $(SPECS_DIR)/bin/specs.bin
+
 #=====================================#
 # Coverage lcov Info file
 LCOV_INFO := $(COVERAGE_DIR)/lcov.info
@@ -105,17 +121,39 @@ LDUFLAGS := -lpthread
 LDFLAGS := -lpthread -lliquid -lboost_thread -lSoapySDR
 # Gtest librarie location (usual)
 GTEST_LIB = /usr/local/lib/libgtest.a
+GMOCK_LIB = /usr/local/lib/libgmock.a
 #=====================================#
 # Command line commands
 RMRF = rm -rf $1
 MKDIR = mkdir -p $1
 #=====================================#
+# build:
+#	mkdir -p out
+#	g++ -o out/main.o -I ./headers -c src/main.cpp
+#	g++ -o out/LiquidAdapter.o -I ./headers -c src/LiquidAdapter.cpp
+#	g++ -o out/SignalProcessingService.o -I ./headers -c src/SignalProcessingService.cpp
+#	g++ out/main.o out/LiquidAdapter.o out/SignalProcessingService.o -o out/main -lliquid
+#
+# test:
+#	mkdir -p test-out
+#	g++ -o test-out/main.spec.o -I ./headers -I ./specs/mocks -c specs/main.spec.cpp
+#	g++ -o test-out/SignalProcessingService.spec.o -I ./headers -I ./specs/mocks -c specs/SignalProcessingService.spec.cpp
+#	g++ -o test-out/test test-out/main.spec.o test-out/SignalProcessingService.spec.o /usr/local/lib/libgtest.a /usr/local/lib/libgmock.a out/SignalProcessingService.o -pthread
+#	./test-out/test
+
+# mkdir -p  bin
+# g++ -g -Isrc -o obj/main.o -c src/main.cpp
+# g++ -o bin/dsp obj/main.o -lpthread -lliquid -lboost_thread -lSoapySDR
+
+# mkdir -p  bin
+# g++ -o bin/dsp obj/main.o -lpthread -lliquid -lboost_thread -lSoapySDR
+
 build_specs:
-	$(CXX) $(CPPFLAGS) -o $(SPECS_OBJ) -c $(SPECS_SRC) $(SPECSFLAGS)
-	$(CXX) $(CPPFLAGS) -o $(TESTS_OBJ) -c $(TESTS_SRC) $(SPECSFLAGS)
-	$(CXX) -o $(SPECS_BIN) $(SPECS_OBJ) $(TESTS_OBJ) $(GTEST_LIB) $(LDUFLAGS) $(SPECSFLAGS)
+	$(CXX) $(CPPFLAGS) -o $(MAIN_SPECS_OBJ) -I $(INCLUDE_DIR) -I $(MOCKS_DIR) -c $(MAIN_SPECS_SRC) $(SPECSFLAGS)
+	$(CXX) $(CPPFLAGS) -o $(SIGNAL_PROCESSING_SERVICE_SPECS_OBJ) -I $(INCLUDE_DIR) -I $(MOCKS_DIR) -c $(SIGNAL_PROCESSING_SERVICE_SPECS_SRC)
+	$(CXX) -o $(SPECS_BIN) $(MAIN_SPECS_OBJ) $(SIGNAL_PROCESSING_SERVICE_SPECS_OBJ) $(GTEST_LIB) $(GMOCK_LIB) $(LDUFLAGS) $(SPECSFLAGS)
 	$(SPECS_BIN)
-	cd specs/coverage && gcov -o ../obj ../main.cpp
+	cd specs/coverage && gcov -o ../obj ../main.specs.cpp
 	lcov -c --directory $(SPECS_DIR)/ --output-file $(LCOV_INFO)
 
 build_open:
@@ -127,8 +165,10 @@ build_rx:
 	$(CXX) -o $(RX_BIN) $(RX_OBJ) $(LDFLAGS)
 
 build_tx: 
-	$(CXX) $(CXXFLAGS) -o $(TX_OBJ) -c $(TX_SRC)
-	$(CXX) -o $(TX_BIN) $(TX_OBJ) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $(LIQUID_ADAPTER_OBJ) -I $(INCLUDE_DIR) -c $(LIQUID_SRC)
+	$(CXX) $(CXXFLAGS) -o $(SIGNAL_PROCESSING_SERVICE_OBJ) -I $(INCLUDE_DIR) -c $(SIGNAL_PROCESSING_SERVICE_SRC)
+	$(CXX) $(CXXFLAGS) -o $(TX_OBJ) -I $(INCLUDE_DIR) -c $(TX_SRC)
+	$(CXX) $(TX_OBJ) $(LIQUID_ADAPTER_OBJ) $(SIGNAL_PROCESSING_SERVICE_OBJ) -o $(TX_BIN) $(LDFLAGS)
 
 build_siso: 
 	$(CXX) $(CXXFLAGS) -o $(SISO_OBJ) -c $(SISO_SRC)
@@ -158,6 +198,6 @@ print_help:
 	$(info    make install  - installs the compiled binary into /usr/local/bin)
 	$(info    make remove  	- uninstalls the compiled binary into /usr/local/bin)
 
-.PHONY: clean
+.PHONY: clean all
 clean:
 	$(call RMRF, $(BUILD_DIR) $(OBJ_DIR) $(SPECSDIR))
