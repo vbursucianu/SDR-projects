@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
       if (written <= 0) {
         cerr << SoapySDR::errToStr(written) << endl;
       }
-      if (flags != 0) {dfdf
+      if (flags != 0) {
         cerr << flags << endl;
       }
     }
